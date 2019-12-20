@@ -7,20 +7,19 @@ import ua.edu.ucu.iterator.MapIterator;
 import ua.edu.ucu.iterator.StreamIterator;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 
 
 public class AsIntStream implements IntStream {
+
     public static void main(String[] args) {
-        IntStream intStream = AsIntStream.of(-1, 0, 1, 2, 3)
-                .filter(x -> x > 0)
-                .map(x -> x * x)
-                .flatMap(x -> AsIntStream.of(x - 1, x, x + 1)); // input values
-
-        System.out.println(intStream.reduce(0, (sum, x) -> sum += x));
-        //System.out.println(res.toArray().length);
-
+        IntStream intStream = AsIntStream.of(-1, 0, 1, 2, 3); // input values
+        Double res = intStream
+                .filter(x -> x > 0) // 1, 2, 3
+                .map(x -> x * x) // 1, 4, 9
+                .flatMap(x -> AsIntStream.of(x - 1, x, x + 1)) // 0, 1, 2, 3, 4, 5, 8, 9, 10
+                .average(); // 42
+        System.out.println(res);
     }
 
     private Iterator<Integer> elementsIterator;
@@ -43,7 +42,13 @@ public class AsIntStream implements IntStream {
 
     @Override
     public Double average() {
-        return (double)sum() / count();
+        int[] arr = this.toArray();
+        int sum = 0;
+        for(int el : arr){
+            sum += el;
+        }
+
+        return (double) sum/arr.length;
     }
 
     @Override
@@ -65,7 +70,7 @@ public class AsIntStream implements IntStream {
 
     @Override
     public Integer min() {
-        if(elementsIterator.hasNext()) {
+        if(elementsIterator.hasNext()){
             Integer minimum = elementsIterator.next();
             while (elementsIterator.hasNext()) {
                 Integer el = elementsIterator.next();
@@ -133,7 +138,6 @@ public class AsIntStream implements IntStream {
 
     @Override
     public int[] toArray() {
-        //FIIIIIIX
         ArrayList<Integer> arrList = new ArrayList<>();
 
         while (elementsIterator.hasNext()){
@@ -142,7 +146,7 @@ public class AsIntStream implements IntStream {
         int[] array = new int[arrList.size()];
         int i = 0;
         for (Integer el : arrList){
-            array[i] = (int)el;
+            array[i] = el;
             i++;
         }
         return array;

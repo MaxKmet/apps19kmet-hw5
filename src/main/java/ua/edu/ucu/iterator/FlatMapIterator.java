@@ -4,7 +4,6 @@ import ua.edu.ucu.function.IntToIntStreamFunction;
 import ua.edu.ucu.stream.AsIntStream;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
 
 public class FlatMapIterator implements Iterator<Integer> {
