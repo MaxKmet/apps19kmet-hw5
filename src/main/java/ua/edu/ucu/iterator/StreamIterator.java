@@ -13,17 +13,12 @@ public class StreamIterator implements Iterator<Integer> {
     }
 
     public StreamIterator(){
-        this.collection = new ArrayList<Integer>();
+        this.collection = new ArrayList<>();
     }
 
     @Override
     public boolean hasNext() {
-        if (curIndex < collection.size())
-            return true;
-        else{
-            curIndex = 0;
-            return false;
-        }
+        return  (curIndex < collection.size());
     }
 
     @Override

@@ -36,8 +36,10 @@ public class FilterIterator implements Iterator<Integer> {
         }
     }
 
+
     @Override
     public Integer next(){
+
         Integer t = nextElement;
         nextElement = null;
         return t;

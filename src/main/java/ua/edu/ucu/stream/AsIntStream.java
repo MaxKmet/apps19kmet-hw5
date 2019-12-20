@@ -13,15 +13,13 @@ import java.util.Iterator;
 
 public class AsIntStream implements IntStream {
     public static void main(String[] args) {
-        IntStream intStream = AsIntStream.of(-1, 0, 1, 2, 3); // input values
-        IntStream res = intStream
+        IntStream intStream = AsIntStream.of(-1, 0, 1, 2, 3)
                 .filter(x -> x > 0)
-                .map(x -> x * x) // 1, 4, 9
-                .flatMap(x -> AsIntStream.of(x - 1, x, x + 1)); // 0, 1, 2, 3, 4, 5, 8, 9, 10
+                .map(x -> x * x)
+                .flatMap(x -> AsIntStream.of(x - 1, x, x + 1)); // input values
 
-        System.out.println(res.count());
-        System.out.println(Arrays.toString(res.toArray()));
-        System.out.println(res.toArray().length);
+        System.out.println(intStream.reduce(0, (sum, x) -> sum += x));
+        //System.out.println(res.toArray().length);
 
     }
 
@@ -59,6 +57,7 @@ public class AsIntStream implements IntStream {
                     maximum = el;
                 }
             }
+
             return maximum;
         }
         return null;
@@ -106,7 +105,10 @@ public class AsIntStream implements IntStream {
 
     @Override
     public void forEach(IntConsumer action) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        while(elementsIterator.hasNext()){
+            action.accept(elementsIterator.next());
+        }
+
     }
 
     @Override
@@ -131,13 +133,19 @@ public class AsIntStream implements IntStream {
 
     @Override
     public int[] toArray() {
-        int[] arr = new int[(int)this.count()];
-        int i = 0;
+        //FIIIIIIX
+        ArrayList<Integer> arrList = new ArrayList<>();
+
         while (elementsIterator.hasNext()){
-            arr[i] = elementsIterator.next();
+            arrList.add(elementsIterator.next());
+        }
+        int[] array = new int[arrList.size()];
+        int i = 0;
+        for (Integer el : arrList){
+            array[i] = (int)el;
             i++;
         }
-        return arr;
+        return array;
     }
 
 }
