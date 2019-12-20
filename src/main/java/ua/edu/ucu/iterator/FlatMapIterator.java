@@ -13,7 +13,7 @@ public class FlatMapIterator implements Iterator<Integer> {
     private StreamIterator tempIterator;
     private boolean hardStop;
 
-    public FlatMapIterator(Iterator<Integer> previous, IntToIntStreamFunction operator){
+    public FlatMapIterator(Iterator<Integer> previous, IntToIntStreamFunction operator) {
         this.previous = previous;
         this.operator = operator;
         this.hardStop = false;
@@ -22,27 +22,26 @@ public class FlatMapIterator implements Iterator<Integer> {
 
     @Override
     public boolean hasNext() {
-        return tempIterator.hasNext() || previous.hasNext() || !hardStop ;
+        return tempIterator.hasNext() || previous.hasNext() || !hardStop;
     }
 
     @Override
-    public Integer next(){
+    public Integer next() {
         if (tempIterator.hasNext()) {
             return tempIterator.next();
 
-        }
-        else {
+        } else {
             if (previous.hasNext()) {
                 AsIntStream tempStream = (AsIntStream) operator.applyAsIntStream(previous.next());
                 int[] arr = tempStream.toArray();
                 ArrayList<Integer> lst = new ArrayList<>();
-                for(int el : arr){
+                for (int el : arr) {
                     lst.add(el);
                 }
                 tempIterator = new StreamIterator(lst);
                 Integer next = tempIterator.next();
 
-                if (!previous.hasNext()){
+                if (!previous.hasNext()) {
                     hardStop = true;
                 }
                 return next;

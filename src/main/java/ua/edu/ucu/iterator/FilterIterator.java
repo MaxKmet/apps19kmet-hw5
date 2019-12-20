@@ -10,7 +10,7 @@ public class FilterIterator implements Iterator<Integer> {
     private IntPredicate predicate;
     private Integer nextElement;
 
-    public FilterIterator(Iterator<Integer> previous, IntPredicate predicate){
+    public FilterIterator(Iterator<Integer> previous, IntPredicate predicate) {
         this.previous = previous;
         this.predicate = predicate;
         this.nextElement = null;
@@ -18,10 +18,9 @@ public class FilterIterator implements Iterator<Integer> {
 
     @Override
     public boolean hasNext() {
-        if (nextElement != null){
+        if (nextElement != null) {
             return true;
-        }
-        else {
+        } else {
             Integer t;
             while (previous.hasNext()) {
                 t = previous.next();
@@ -38,7 +37,7 @@ public class FilterIterator implements Iterator<Integer> {
 
 
     @Override
-    public Integer next(){
+    public Integer next() {
 
         Integer t = nextElement;
         nextElement = null;

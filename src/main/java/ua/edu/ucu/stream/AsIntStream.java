@@ -12,21 +12,11 @@ import java.util.Iterator;
 
 public class AsIntStream implements IntStream {
 
-    public static void main(String[] args) {
-        IntStream intStream = AsIntStream.of(-1, 0, 1, 2, 3); // input values
-        Double res = intStream
-                .filter(x -> x > 0) // 1, 2, 3
-                .map(x -> x * x) // 1, 4, 9
-                .flatMap(x -> AsIntStream.of(x - 1, x, x + 1)) // 0, 1, 2, 3, 4, 5, 8, 9, 10
-                .average(); // 42
-        System.out.println(res);
-    }
-
     private Iterator<Integer> elementsIterator;
 
     private AsIntStream(int... values) {
         ArrayList<Integer> elements = new ArrayList<>();
-        for(int v : values){
+        for (int v : values) {
             elements.add(v);
         }
         this.elementsIterator = new StreamIterator(elements);
@@ -44,21 +34,20 @@ public class AsIntStream implements IntStream {
     public Double average() {
         int[] arr = this.toArray();
         int sum = 0;
-        for(int el : arr){
+        for (int el : arr) {
             sum += el;
         }
 
-        return (double) sum/arr.length;
+        return (double) sum / arr.length;
     }
 
     @Override
     public Integer max() {
-        if(elementsIterator.hasNext()) {
+        if (elementsIterator.hasNext()) {
             Integer maximum = elementsIterator.next();
             while (elementsIterator.hasNext()) {
                 Integer el = elementsIterator.next();
-                if(el > maximum)
-                {
+                if (el > maximum) {
                     maximum = el;
                 }
             }
@@ -70,12 +59,11 @@ public class AsIntStream implements IntStream {
 
     @Override
     public Integer min() {
-        if(elementsIterator.hasNext()){
+        if (elementsIterator.hasNext()) {
             Integer minimum = elementsIterator.next();
             while (elementsIterator.hasNext()) {
                 Integer el = elementsIterator.next();
-                if(el < minimum)
-                {
+                if (el < minimum) {
                     minimum = el;
                 }
             }
@@ -87,7 +75,7 @@ public class AsIntStream implements IntStream {
     @Override
     public long count() {
         long counter = 0;
-        while (elementsIterator.hasNext()){
+        while (elementsIterator.hasNext()) {
             counter += 1;
             elementsIterator.next();
         }
@@ -97,7 +85,7 @@ public class AsIntStream implements IntStream {
     @Override
     public Integer sum() {
         Integer sumOfElems = 0;
-        while (elementsIterator.hasNext()){
+        while (elementsIterator.hasNext()) {
             sumOfElems += elementsIterator.next();
         }
         return sumOfElems;
@@ -105,12 +93,12 @@ public class AsIntStream implements IntStream {
 
     @Override
     public IntStream filter(IntPredicate predicate) {
-       return new AsIntStream(new FilterIterator(this.elementsIterator, predicate));
+        return new AsIntStream(new FilterIterator(this.elementsIterator, predicate));
     }
 
     @Override
     public void forEach(IntConsumer action) {
-        while(elementsIterator.hasNext()){
+        while (elementsIterator.hasNext()) {
             action.accept(elementsIterator.next());
         }
 
@@ -123,13 +111,13 @@ public class AsIntStream implements IntStream {
 
     @Override
     public IntStream flatMap(IntToIntStreamFunction func) {
-        return new AsIntStream(new FlatMapIterator(this.elementsIterator,func));
+        return new AsIntStream(new FlatMapIterator(this.elementsIterator, func));
     }
 
     @Override
     public int reduce(int identity, IntBinaryOperator op) {
         int result = identity;
-        while (elementsIterator.hasNext()){
+        while (elementsIterator.hasNext()) {
             Integer inp = elementsIterator.next();
             result = op.apply(result, inp);
         }
@@ -140,12 +128,12 @@ public class AsIntStream implements IntStream {
     public int[] toArray() {
         ArrayList<Integer> arrList = new ArrayList<>();
 
-        while (elementsIterator.hasNext()){
+        while (elementsIterator.hasNext()) {
             arrList.add(elementsIterator.next());
         }
         int[] array = new int[arrList.size()];
         int i = 0;
-        for (Integer el : arrList){
+        for (Integer el : arrList) {
             array[i] = el;
             i++;
         }

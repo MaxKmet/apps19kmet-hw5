@@ -9,7 +9,7 @@ public class MapIterator implements Iterator<Integer> {
     private Iterator<Integer> previous;
     private IntUnaryOperator operator;
 
-    public MapIterator(Iterator<Integer> previous, IntUnaryOperator operator){
+    public MapIterator(Iterator<Integer> previous, IntUnaryOperator operator) {
         this.previous = previous;
         this.operator = operator;
     }
@@ -20,7 +20,7 @@ public class MapIterator implements Iterator<Integer> {
     }
 
     @Override
-    public Integer next(){
+    public Integer next() {
         return operator.apply(previous.next());
     }
 
