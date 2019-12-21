@@ -33,6 +33,9 @@ public class AsIntStream implements IntStream {
     @Override
     public Double average() {
         int[] arr = this.toArray();
+        if (arr.length == 0){
+            throw new IllegalArgumentException();
+        }
         int sum = 0;
         for (int el : arr) {
             sum += el;
@@ -43,7 +46,10 @@ public class AsIntStream implements IntStream {
 
     @Override
     public Integer max() {
-        if (elementsIterator.hasNext()) {
+        if (!elementsIterator.hasNext()){
+            throw new IllegalArgumentException();
+        }
+        else {
             Integer maximum = elementsIterator.next();
             while (elementsIterator.hasNext()) {
                 Integer el = elementsIterator.next();
@@ -54,12 +60,16 @@ public class AsIntStream implements IntStream {
 
             return maximum;
         }
-        return null;
+
     }
 
     @Override
     public Integer min() {
-        if (elementsIterator.hasNext()) {
+        if(!elementsIterator.hasNext())
+        {
+            throw new IllegalArgumentException();
+        }
+        else{
             Integer minimum = elementsIterator.next();
             while (elementsIterator.hasNext()) {
                 Integer el = elementsIterator.next();
@@ -69,7 +79,7 @@ public class AsIntStream implements IntStream {
             }
             return minimum;
         }
-        return null;
+
     }
 
     @Override
@@ -84,6 +94,9 @@ public class AsIntStream implements IntStream {
 
     @Override
     public Integer sum() {
+        if(!elementsIterator.hasNext()){
+            throw new IllegalArgumentException();
+        }
         Integer sumOfElems = 0;
         while (elementsIterator.hasNext()) {
             sumOfElems += elementsIterator.next();
